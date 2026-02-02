@@ -25,8 +25,6 @@ SECRET_KEY = 'django-insecure-xvn)tbg@cwv0@(3**i_+!if*3qq0r=+wz_zuaj5n)872v&(v!i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -37,7 +35,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'main',
 ]
+
+ALLOWED_HOSTS = [
+    'https://road-signes.onrender.com',
+    'localhost',
+    '127.0.0.1',
+]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
