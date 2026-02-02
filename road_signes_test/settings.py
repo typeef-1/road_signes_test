@@ -39,7 +39,7 @@ INSTALLED_APPS = [
 ]
 
 ALLOWED_HOSTS = [
-    'https://road-signes.onrender.com',
+    'road-signes.onrender.com',
     'localhost',
     '127.0.0.1',
 ]
