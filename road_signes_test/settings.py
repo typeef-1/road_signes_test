@@ -42,6 +42,7 @@ ALLOWED_HOSTS = [
     'road-signes.onrender.com',
     'localhost',
     '127.0.0.1',
+    'roadsignestest-production.up.railway.app'
 ]
 
 
