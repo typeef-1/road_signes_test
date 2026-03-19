@@ -1,1 +1,2 @@
-web: python manage.py migrate && gunicorn road_signes_test.wsgi
+release: python manage.py migrate && python create_admin.py
+web: gunicorn road_signes_test.wsgi
