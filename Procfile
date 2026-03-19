@@ -1,0 +1,1 @@
+web: python manage.py migrate && gunicorn road_signes_test.wsgi
