@@ -59,6 +59,8 @@ ALLOWED_HOSTS = [
 CSRF_TRUSTED_ORIGINS = [
     'https://signanddrive.up.railway.app',
     'http://signanddrive.up.railway.app',
+    'https://quiziz.up.railway.app/',
+    'http://quiziz.up.railway.app/'
 ]
 
 
