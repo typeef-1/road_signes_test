@@ -57,10 +57,7 @@ ALLOWED_HOSTS = [
 
 # CSRF настройки
 CSRF_TRUSTED_ORIGINS = [
-    'https://signanddrive.up.railway.app',
-    'http://signanddrive.up.railway.app',
-    'https://quiziz.up.railway.app/',
-    'http://quiziz.up.railway.app/'
+    'https://quiziz.up.railway.app',
 ]
 
 
@@ -146,6 +143,9 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
 # Static files (CSS, JavaScript, Images)
