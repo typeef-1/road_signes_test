@@ -4,6 +4,8 @@ from django.shortcuts import render, redirect
 
 from django.core.handlers.wsgi import WSGIRequest
 
-def index_page(req: WSGIRequest):
-    context = {}
-    return render(req, 'index.html', context)
+from django.views.generic import TemplateView
+
+def landingPage(request: WSGIRequest):
+    context={}
+    return render(request, 'landing_page.html', context)
