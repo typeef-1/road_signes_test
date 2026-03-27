@@ -21,36 +21,36 @@ DEBUG = True
 
 #######################################################################################
 # Для разработки - временный ключ
-SECRET_KEY = '-ex^=-tsefukz8+eqkr+_+exmxoas&g0ro)*&qbe7fpx&ukrk^'
+# SECRET_KEY = '-ex^=-tsefukz8+eqkr+_+exmxoas&g0ro)*&qbe7fpx&ukrk^'
 # Для прода используйте:
-# SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.environ.get('PGDATABASE'),
-#         'USER': os.environ.get('PGUSER'),
-#         'PASSWORD': os.environ.get('PGPASSWORD'),
-#         'HOST': os.environ.get('PGHOST'),
-#         'PORT': os.environ.get('PGPORT'),
-#     }
-# }
-
-###############################################################
-
-# Добавьте это для локальной разработки
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('PGDATABASE'),
+        'USER': os.environ.get('PGUSER'),
+        'PASSWORD': os.environ.get('PGPASSWORD'),
+        'HOST': os.environ.get('PGHOST'),
+        'PORT': os.environ.get('PGPORT'),
     }
 }
 
+###############################################################
+#
+# # Добавьте это для локальной разработки
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 # Разрешенные хосты
 ALLOWED_HOSTS = [
-    'signanddrive.up.railway.app',
+    'simplevote.up.railway.app',
     'localhost',
     '127.0.0.1',
 ]
@@ -73,9 +73,7 @@ INSTALLED_APPS = [
     'main',
 ]
 
-ALLOWED_HOSTS = [
-    '*'
-]
+
 
 
 MIDDLEWARE = [
