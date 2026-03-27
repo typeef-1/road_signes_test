@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+        <h1 class="mb-3">
+            {% if form.instance.pk %}
+                Редактирование вопроса
+            {% else %}
+                Новый вопрос
+            {% endif %}
+        </h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div id="answersBlock" class="mt-4">
+                <h3>Варианты ответов</h3>
+                {{ formset.management_form }}
+                <div id="answersContainer">
+                    {% for form in formset %}
+                        <div class="card mb-2 p-3 answer-form">
+                            {{ form.id }}
+                            <div class="mb-2">
+                                {{ form.text.label_tag }}
+                                {{ form.text }}
+                            </div>
+                            <div class="d-none">
+                                {{ form.DELETE }}
+                            </div>
+                            <button type="button" class="btn btn-outline-danger btn-sm js-delete-answer">
+                                Удалить
+                            </button>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="d-none" id="answerPrototype">
+                    <div class="answer-proto">
+                        {{ formset.empty_form.id }}
+                        <div class="mb-2">
+                            {{ formset.empty_form.text.label_tag }}
+                            {{ formset.empty_form.text }}
+                        </div>
+                        <div class="d-none">
+                            {{ formset.empty_form.DELETE }}
+                        </div>
+                        <button type="button" class="btn btn-outline-danger btn-sm js-delete-answer">
+                            Удалить
+                        </button>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-outline-primary btn-sm mb-3" id="addAnswerBtn">
+                    + Добавить вариант
+                </button>
+            </div>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+            {% if question %}
+                <a href="{% url 'test_detail' question.test.id %}" class="btn btn-outline-secondary">Отмена</a>
+            {% else %}
+                <a href="{% url 'test_detail' test.id %}" class="btn btn-outline-secondary">Отмена</a>
+            {% endif %}
+        </form>
+
+        <script>
+            function initQuestionForm() {
+                const addBtn = document.getElementById('addAnswerBtn');
+                const container = document.getElementById('answersContainer');
+                const answersBlock = document.getElementById('answersBlock');
+                const qType = document.getElementById('id_question_type');
+                const protoRoot = document.getElementById('answerPrototype');
+                const totalForms = answersBlock
+                    ? answersBlock.querySelector('input[type="hidden"][name$="-TOTAL_FORMS"]')
+                    : null;
+                if (!addBtn || !container || !totalForms || !answersBlock || !qType || !protoRoot) return;
+
+                function toggleAnswers() {
+                    const isText = qType.value === 'text';
+                    answersBlock.classList.toggle('d-none', isText);
+                }
+                toggleAnswers();
+                qType.addEventListener('change', toggleAnswers);
+
+                function wireDeleteButtons(root) {
+                    root.querySelectorAll('.js-delete-answer').forEach(function (btn) {
+                        btn.addEventListener('click', function () {
+                            const card = btn.closest('.answer-form');
+                            if (!card) return;
+                            const del = card.querySelector('input[type="checkbox"][name$="-DELETE"]');
+                            if (del) del.checked = true;
+                            card.classList.add('d-none');
+                        });
+                    });
+                }
+                wireDeleteButtons(document);
+
+                function replacePrefixAttrs(node, index) {
+                    const replaceInAttr = (el, attr) => {
+                        const val = el.getAttribute(attr);
+                        if (!val) return;
+                        el.setAttribute(attr, val.replaceAll('__prefix__', String(index)));
+                    };
+                    node.querySelectorAll('[name]').forEach(el => replaceInAttr(el, 'name'));
+                    node.querySelectorAll('[id]').forEach(el => replaceInAttr(el, 'id'));
+                    node.querySelectorAll('label[for]').forEach(el => replaceInAttr(el, 'for'));
+                }
+
+                addBtn.addEventListener('click', function () {
+                    const index = parseInt(totalForms.value, 10);
+                    const card = document.createElement('div');
+                    card.className = 'card mb-2 p-3 answer-form';
+                    const proto = protoRoot.querySelector('.answer-proto');
+                    if (!proto) return;
+                    const cloned = proto.cloneNode(true);
+                    replacePrefixAttrs(cloned, index);
+                    card.appendChild(cloned);
+
+                    container.appendChild(card);
+                    totalForms.value = String(index + 1);
+                    wireDeleteButtons(card);
+                });
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initQuestionForm);
+            } else {
+                initQuestionForm();
+            }
+        </script>
+    </div>
+</div>
+{% endblock %}

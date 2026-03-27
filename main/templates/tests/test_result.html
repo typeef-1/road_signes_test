@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Итоги голосования: {{ test.title }}</h1>
+
+{% if has_voted %}
+    <div class="alert alert-success">Ваш голос учтён.</div>
+{% else %}
+    <div class="alert alert-warning">Вы ещё не голосовали в этом голосовании.</div>
+{% endif %}
+
+<h2 class="mt-4">Результаты</h2>
+{% for item in question_stats %}
+    <div class="card mb-3">
+        <div class="card-header">
+            <strong>{{ forloop.counter }}. {{ item.question.text }}</strong>
+        </div>
+        <div class="card-body">
+            {% if item.type == 'text' %}
+                {% if item.texts %}
+                    <ul class="list-group">
+                        {% for t in item.texts %}
+                            <li class="list-group-item">{{ t }}</li>
+                        {% endfor %}
+                    </ul>
+                    <p class="text-muted mt-2">Показаны последние {{ item.texts|length }} ответов.</p>
+                {% else %}
+                    <p class="text-muted">Пока нет текстовых ответов.</p>
+                {% endif %}
+            {% else %}
+                {% if item.options %}
+                    <ul class="list-group">
+                        {% for opt in item.options %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>{{ opt.selected_answer__text }}</span>
+                                <span class="badge bg-primary rounded-pill">{{ opt.votes }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <p class="text-muted mt-2">Всего голосов по вопросу: {{ item.total_votes }}</p>
+                {% else %}
+                    <p class="text-muted">Пока нет голосов по этому вопросу.</p>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+{% endfor %}
+
+<h2 class="mt-4">Ваши ответы</h2>
+{% if user_answers %}
+    {% for user_answer in user_answers %}
+        <div class="card mb-2">
+            <div class="card-body">
+                <p><strong>{{ user_answer.question.text }}</strong></p>
+                {% if user_answer.selected_answer %}
+                    <p class="mb-0">Вы выбрали: {{ user_answer.selected_answer.text }}</p>
+                {% elif user_answer.text_answer %}
+                    <p class="mb-0">Ваш ответ: {{ user_answer.text_answer }}</p>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <p class="text-muted">Вы ещё не отвечали в этом голосовании.</p>
+{% endif %}
+
+<a href="{% url 'test_list' %}" class="btn btn-primary mt-3">К списку голосований</a>
+{% endblock %}

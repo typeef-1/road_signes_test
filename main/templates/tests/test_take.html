@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{ test.title }}</h1>
+<form method="post">
+    {% csrf_token %}
+    {% for question in questions %}
+        <div class="card mb-3">
+            <div class="card-header">
+                <strong>{{ forloop.counter }}. {{ question.text }}</strong>
+                {% if question.question_type == 'single' %}
+                    <span class="badge bg-info">Одиночный выбор</span>
+                {% elif question.question_type == 'multiple' %}
+                    <span class="badge bg-warning">Множественный выбор</span>
+                {% else %}
+                    <span class="badge bg-secondary">Текстовый ответ</span>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                {% if question.question_type == 'single' %}
+                    {% for answer in question.answers.all %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="question_{{ question.id }}" value="{{ answer.id }}" id="q{{ question.id }}_a{{ answer.id }}">
+                            <label class="form-check-label" for="q{{ question.id }}_a{{ answer.id }}">
+                                {{ answer.text }}
+                            </label>
+                        </div>
+                    {% endfor %}
+                {% elif question.question_type == 'multiple' %}
+                    {% for answer in question.answers.all %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="question_{{ question.id }}" value="{{ answer.id }}" id="q{{ question.id }}_a{{ answer.id }}">
+                            <label class="form-check-label" for="q{{ question.id }}_a{{ answer.id }}">
+                                {{ answer.text }}
+                            </label>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <textarea class="form-control" name="question_{{ question.id }}" rows="3"></textarea>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-success">Отправить голос</button>
+</form>
+{% endblock %}

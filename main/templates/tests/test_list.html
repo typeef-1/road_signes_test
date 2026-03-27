@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Список голосований</h1>
+<a href="{% url 'test_create' %}" class="btn btn-primary mb-3">Создать голосование</a>
+<div class="row">
+    {% for test in tests %}
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ test.title }}</h5>
+                    <p class="card-text">{{ test.description|truncatechars:100 }}</p>
+                    <p class="card-text"><small>Автор: {{ test.author.username }}</small></p>
+                    <span class="badge bg-secondary">{{ test.get_visibility_display }}</span>
+                    <a href="{% url 'test_detail' test.id %}" class="btn btn-primary">Подробнее</a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>Голосований пока нет.</p>
+    {% endfor %}
+</div>
+{% endblock %}

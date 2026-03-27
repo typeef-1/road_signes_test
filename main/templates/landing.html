@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8 text-center">
+        <h1 class="display-4 mb-3">Платформа для голосований</h1>
+        <p class="lead mb-4">
+            Создавайте опросы, голосуйте и сразу смотрите результаты в удобном интерфейсе.
+        </p>
+
+        <div class="d-flex justify-content-center gap-2 mb-4">
+            <a href="{% url 'test_list' %}" class="btn btn-primary btn-lg">
+                Перейти к голосованиям
+            </a>
+            {% if not user.is_authenticated %}
+                <a href="{% url 'login' %}" class="btn btn-outline-secondary btn-lg">
+                    Войти
+                </a>
+            {% endif %}
+        </div>
+
+        <hr class="my-4">
+
+        <div class="row text-start mt-4">
+            <div class="col-md-4 mb-3">
+                <h4>Создавайте опросы</h4>
+                <p>Гибкие типы вопросов: одиночный и множественный выбор, текстовые ответы.</p>
+            </div>
+            <div class="col-md-4 mb-3">
+                <h4>Голосуйте</h4>
+                <p>Удобная форма для прохождения голосований прямо из браузера.</p>
+            </div>
+            <div class="col-md-4 mb-3">
+                <h4>Анализируйте результаты</h4>
+                <p>Подсчёт голосов по вариантам и просмотр индивидуальных ответов.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

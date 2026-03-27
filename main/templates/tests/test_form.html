@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <h1 class="mb-3">
+            {% if form.instance.pk %}
+                Редактирование голосования
+            {% else %}
+                Создание голосования
+            {% endif %}
+        </h1>
+        <p class="text-muted">
+            Сначала задайте название и описание. После сохранения вы сразу перейдёте к добавлению вопросов и вариантов ответов.
+        </p>
+        <form method="post" class="mt-3">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="alert alert-info mt-3">
+                <strong>Доступ:</strong> “Публичное” видно всем, “По ссылке” скрыто из списка (нужна ссылка), “Только выбранным” — доступ по никам (username).
+            </div>
+            <button type="submit" class="btn btn-primary" id="submitBtn">
+                {% if form.instance.pk %}
+                    Сохранить
+                {% else %}
+                    Сохранить и перейти к вопросам
+                {% endif %}
+            </button>
+            <a href="{% url 'test_list' %}" class="btn btn-outline-secondary">Отмена</a>
+        </form>
+        <script>
+            (function () {
+                const form = document.currentScript.closest('div').querySelector('form');
+                const btn = document.getElementById('submitBtn');
+                if (!form || !btn) return;
+                form.addEventListener('submit', function () {
+                    btn.disabled = true;
+                    btn.textContent = 'Сохраняю...';
+                });
+            })();
+        </script>
+    </div>
+</div>
+{% endblock %}
